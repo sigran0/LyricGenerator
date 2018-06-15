@@ -28,7 +28,7 @@ class Encoder(nn.Module):
 
         self.embedding = embedding
 
-        if self.rnn_type in ['LSTM', 'GRU', 'RNN']:
+        if rnn_type in ['LSTM', 'GRU', 'RNN']:
             self.rnn = getattr(nn, rnn_type)(embedding_size, hidden_size, n_layers, dropout=dropout)
         else:
             raise ValueError('rnn_type must be LSTM or GRU or RNN')
@@ -40,6 +40,9 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
+
+    #   TODO    https://github.com/GunhoChoi/PyTorch-FastCampus/blob/master/05_RNN/2_Char_RNN/3_Char_RNN_LSTM.ipynb
+    #   위에 참조해서 기초부터 다시 구현해보자
 
     def __init__(self, embedding, config):
         super(Decoder, self).__init__()
@@ -53,7 +56,7 @@ class Decoder(nn.Module):
 
         self.embedding = embedding
 
-        if self.rnn_type in ['LSTM', 'GRU', 'RNN']:
+        if rnn_type in ['LSTM', 'GRU', 'RNN']:
             self.rnn = getattr(nn, rnn_type)(embedding_size, hidden_size, n_layers, dropout=dropout)
         else:
             raise ValueError('rnn_type must be LSTM or GRU or RNN')
@@ -62,6 +65,7 @@ class Decoder(nn.Module):
 
     def forward(self, input_word, last_hidden):
         embedded = self.embedding(input_word).view(1, 1, -1)
+
 
         output, hidden = self.rnn(embedded, last_hidden)
 
