@@ -57,6 +57,7 @@ class Decoder(nn.Module):
         self.embedding = embedding
 
         if rnn_type in ['LSTM', 'GRU', 'RNN']:
+            print(embedding_size, hidden_size, n_layers)
             self.rnn = getattr(nn, rnn_type)(embedding_size, hidden_size, n_layers, dropout=dropout)
         else:
             raise ValueError('rnn_type must be LSTM or GRU or RNN')
@@ -65,7 +66,6 @@ class Decoder(nn.Module):
 
     def forward(self, input_word, last_hidden):
         embedded = self.embedding(input_word).view(1, 1, -1)
-
 
         output, hidden = self.rnn(embedded, last_hidden)
 
